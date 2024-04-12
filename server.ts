@@ -1,7 +1,11 @@
 import app from "./src/app";
+import { config } from "./src/config/config";
+import connectDB from "./src/config/db";
 
-const startServer = () => {
-  const port = process.env.PORT || 8000;
+const startServer = async () => {
+  await connectDB();
+
+  const port = config.port || 8000;
 
   app.listen(port, () => {
     console.log("server listening on port " + port);
