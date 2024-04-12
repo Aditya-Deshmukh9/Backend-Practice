@@ -1,16 +1,15 @@
-import express, { Request, Response, NextFunction } from "express";
-import createHttpError, { HttpError } from "http-errors";
-import { config } from "./config/config";
+import express from "express";
 import globalErrorHandler from "./middleware/globalErrorHandler";
+import userRouter from "./user/userRouter";
 
 const app = express();
+app.use(express.json());
 
 app.get("/", (req, res) => {
-  const error = createHttpError(400, "something wnt wrong");
-  throw error;
-
   res.json({ success: true });
 });
+
+app.use("/api/users", userRouter);
 
 //Global Error Handler
 app.use(globalErrorHandler);
