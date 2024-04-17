@@ -7,6 +7,7 @@ const _config = {
   databaseUrl: process.env.MONGODB_URL,
   env: process.env.NODE_ENV,
   jwtsecret: process.env.JWT_SECRET,
+  frontend_domain: process.env.FRONTEND_DOMAI,
 };
 
 export const config = Object.freeze(_config);
