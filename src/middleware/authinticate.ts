@@ -1,28 +1,30 @@
-// import { verify } from "jsonwebtoken";
-// import { NextFunction, Request, Response } from "express";
-// import createHttpError from "http-errors";
-// import { config } from "../config/config";
+import { verify } from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
+import createHttpError from "http-errors";
+import { config } from "../config/config";
 
-// export interface AuthRequest extends Request {
-//   userId: string;
-// }
+export interface AuthRequest extends Request {
+  userId: string;
+}
 
-// const authinticate = (req: Request, res: Response, next: NextFunction) => {
-//   const token = req.header("Authorization");
-//   if (!token) {
-//     return next(createHttpError(401, "token is required"));
-//   }
+const authinticate = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.header("Authorization");
+  if (!token) {
+    return next(createHttpError(401, "token is required"));
+  }
 
-//   try {
-//     const parseTokeb = token.split(" ")[1];
-//     const decode = verify(parseTokeb, config.jwtsecret as string);
-//     console.log("decode", decode);
+  try {
+    const parseTokeb = token.split(" ")[1];
+    const decode = verify(parseTokeb, config.jwtsecret as string);
+    console.log("decode", decode);
 
-//     const _req = req as AuthRequest;
-//     _req.userId = decode.sub as string;
-//   } catch (error) {
-//     return next(createHttpError(401, "Token expired"));
-//   }
-// };
+    const _req = req as AuthRequest;
+    _req.userId = decode.sub as string;
 
-// export default authinticate;
+    next();
+  } catch (error) {
+    return next(createHttpError(401, "Token expired"));
+  }
+};
+
+export default authinticate;
